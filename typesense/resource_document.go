@@ -2,6 +2,7 @@ package typesense
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -37,7 +38,7 @@ func resourceTypesenseDocument() *schema.Resource {
 		UpdateContext: resourceTypesenseDocumentUpsert,
 		DeleteContext: resourceTypesenseDocumentDelete,
 		Importer: &schema.ResourceImporter{
-			StateContext: schema.ImportStatePassthroughContext,
+			StateContext: resourceTypesenseDocumentState,
 		},
 	}
 }
@@ -71,7 +72,7 @@ func resourceTypesenseDocumentUpsert(ctx context.Context, d *schema.ResourceData
 		return diag.FromErr(err)
 	}
 
-	d.SetId(id)
+	d.SetId(fmt.Sprintf("%s.%s", collectionName, id))
 	return diags
 }
 
@@ -80,8 +81,10 @@ func resourceTypesenseDocumentRead(ctx context.Context, d *schema.ResourceData, 
 
 	var diags diag.Diagnostics
 
-	id := d.Id()
-	collectionName := d.Get("collection_name").(string)
+	collectionName, id, err := splitCollectionRelatedId(d.Id(), "document")
+	if err != nil {
+		return diag.FromErr(err)
+	}
 
 	doc, err := client.Collection(collectionName).Document(id).Retrieve()
 	if err != nil {
@@ -101,14 +104,33 @@ func resourceTypesenseDocumentDelete(ctx context.Context, d *schema.ResourceData
 
 	var diags diag.Diagnostics
 
-	id := d.Id()
-	collectionName := d.Get("collection_name").(string)
+	collectionName, id, err := splitCollectionRelatedId(d.Id(), "document")
+	if err != nil {
+		return diag.FromErr(err)
+	}
 
-	_, err := client.Collection(collectionName).Document(id).Delete()
+	_, err = client.Collection(collectionName).Document(id).Delete()
 	if err != nil {
 		return diag.FromErr(err)
 	}
 
 	d.SetId("")
 	return diags
+}
+
+func resourceTypesenseDocumentState(ctx context.Context, d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
+	client := meta.(*typesense.Client)
+
+	collectionName, id, err := splitCollectionRelatedId(d.Id(), "document")
+	if err != nil {
+		return nil, err
+	}
+
+	doc, err := client.Collection(collectionName).Document(id).Retrieve()
+	if err != nil {
+		return nil, err
+	}
+
+	d.SetId(fmt.Sprintf("%s.%s", collectionName, doc["id"]))
+	return []*schema.ResourceData{d}, nil
 }
