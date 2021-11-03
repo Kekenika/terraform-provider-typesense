@@ -18,6 +18,7 @@ func resourceTypesenseSynonyms() *schema.Resource {
 				Type:        schema.TypeString,
 				Description: "Name of the synonyms",
 				Required:    true,
+				ForceNew:    true,
 			},
 			"collection_name": {
 				Type:        schema.TypeString,

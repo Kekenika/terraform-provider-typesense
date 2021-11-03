@@ -19,6 +19,7 @@ func resourceTypesenseCuration() *schema.Resource {
 				Type:        schema.TypeString,
 				Description: "Name of the curation",
 				Required:    true,
+				ForceNew:    true,
 			},
 			"collection_name": {
 				Type:        schema.TypeString,
