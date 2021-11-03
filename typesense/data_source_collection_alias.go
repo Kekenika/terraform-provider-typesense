@@ -23,7 +23,7 @@ func dataSourceTypesenseCollectionAlias() *schema.Resource {
 				Computed:    true,
 			},
 		},
-		ReadContext: dataSourceTypesenseCollectionAliasRead,
+		ReadContext: resourceTypesenseCollectionAliasRead,
 	}
 }
 
@@ -48,5 +48,6 @@ func dataSourceTypesenseCollectionAliasRead(ctx context.Context, d *schema.Resou
 		return diag.FromErr(err)
 	}
 
+	d.SetId("id")
 	return diags
 }

@@ -1,7 +1,12 @@
 package typesense
 
 import (
+	"context"
+	"fmt"
+
+	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/typesense/typesense-go/typesense"
 )
 
 func dataSourceTypesenseCuration() *schema.Resource {
@@ -69,6 +74,49 @@ func dataSourceTypesenseCuration() *schema.Resource {
 				},
 			},
 		},
-		ReadContext: resourceTypesenseCurationRead,
+		ReadContext: dataSourceTypesenseCurationRead,
 	}
+}
+
+func dataSourceTypesenseCurationRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+	client := meta.(*typesense.Client)
+
+	var diags diag.Diagnostics
+
+	name := d.Get("name").(string)
+	collectionName := d.Get("collection_name").(string)
+	id := fmt.Sprintf("%s.%s", collectionName, name)
+
+	override, err := client.Collection(collectionName).Override(name).Retrieve()
+	if err != nil {
+		d.SetId("")
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("name", override.Id); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("collection_name", collectionName); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("rule", flattenCurationRule(override.Rule)); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if len(override.Includes) > 0 {
+		if err := d.Set("includes", flattenCurationIncludes(override.Includes)); err != nil {
+			return diag.FromErr(err)
+		}
+	}
+
+	if len(override.Excludes) > 0 {
+		if err := d.Set("excludes", flattenCurationExcludes(override.Excludes)); err != nil {
+			return diag.FromErr(err)
+		}
+	}
+
+	d.SetId(id)
+	return diags
 }
