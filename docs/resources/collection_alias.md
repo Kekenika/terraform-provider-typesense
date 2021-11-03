@@ -36,5 +36,5 @@ resource "typesense_collection_alias" "my_alias" {
 Import is supported using the following syntax:
 
 ```shell
-terraform import typesense_collection_alias.my_alias my-alias
+terraform import typesense_collection_alias.my_alias my_collection.my-alias
 ```

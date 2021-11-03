@@ -32,20 +32,17 @@ resource "typesense_synonyms" "my_synonyms" {
 
 - **collection_name** (String) Name of the collection
 - **name** (String) Name of the synonyms
-- **synonyms** (Block List, Min: 1) (see [below for nested schema](#nestedblock--synonyms))
+- **synonyms** (List of String)
 
 ### Optional
 
 - **id** (String) The ID of this resource.
 - **root** (String) Root for one-way synonym
 
-<a id="nestedblock--synonyms"></a>
-### Nested Schema for `synonyms`
-
 ## Import
 
 Import is supported using the following syntax:
 
 ```shell
-terraform import typesense_synonyms.my_synonyms my_synonyms
+terraform import typesense_synonyms.my_synonyms my_collection.my_synonyms
 ```
