@@ -1,0 +1,1 @@
+terraform import typesense_synonyms.my_synonyms my_synonyms 

@@ -1,0 +1,1 @@
+terraform import typesense_collection.my_collection my-collection
