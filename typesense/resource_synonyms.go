@@ -25,17 +25,17 @@ func resourceTypesenseSynonyms() *schema.Resource {
 				Required:    true,
 			},
 			"synonyms": {
-				Type:     schema.TypeList,
-				Default:  "Target collection names",
-				Required: true,
+				Type:        schema.TypeList,
+				Description: "Target collection names",
+				Required:    true,
 				Elem: &schema.Schema{
 					Type: schema.TypeString,
 				},
 			},
 			"root": {
 				Type:        schema.TypeString,
-				Optional:    true,
 				Description: "Root for one-way synonym",
+				Optional:    true,
 			},
 		},
 		ReadContext:   resourceTypesenseSynonymsRead,
