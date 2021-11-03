@@ -8,11 +8,6 @@ func dataSourceTypesenseDocument() *schema.Resource {
 	return &schema.Resource{
 		Description: "Item in a collection",
 		Schema: map[string]*schema.Schema{
-			"id": {
-				Type:        schema.TypeString,
-				Description: "ID of the document",
-				Required:    true,
-			},
 			"collection_name": {
 				Type:        schema.TypeString,
 				Description: "Name of the collection",

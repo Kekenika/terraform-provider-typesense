@@ -32,7 +32,10 @@ resource "typesense_document" "doc" {
 
 - **collection_name** (String) Name of the collection
 - **document** (Map of String) Document's body
-- **id** (String) ID of the document
+
+### Optional
+
+- **id** (String) The ID of this resource.
 
 ## Import
 
