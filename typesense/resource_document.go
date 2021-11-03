@@ -21,6 +21,7 @@ func resourceTypesenseDocument() *schema.Resource {
 			"document": {
 				Type:        schema.TypeMap,
 				Required:    true,
+				ForceNew:    true,
 				Description: "Document's body",
 				Elem: &schema.Schema{
 					Type: schema.TypeString,
@@ -87,6 +88,10 @@ func resourceTypesenseDocumentRead(ctx context.Context, d *schema.ResourceData, 
 	}
 
 	if err := d.Set("document", doc); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("collection_name", collectionName); err != nil {
 		return diag.FromErr(err)
 	}
 

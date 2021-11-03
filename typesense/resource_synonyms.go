@@ -18,6 +18,7 @@ func resourceTypesenseSynonyms() *schema.Resource {
 				Type:        schema.TypeString,
 				Description: "Name of the synonyms",
 				Required:    true,
+				ForceNew:    true,
 			},
 			"collection_name": {
 				Type:        schema.TypeString,
@@ -85,6 +86,10 @@ func resourceTypesenseSynonymsRead(ctx context.Context, d *schema.ResourceData, 
 	synonym, err := client.Collection(collectionName).Synonym(id).Retrieve()
 	if err != nil {
 		d.SetId("")
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("collection_name", collectionName); err != nil {
 		return diag.FromErr(err)
 	}
 

@@ -19,6 +19,7 @@ func resourceTypesenseCuration() *schema.Resource {
 				Type:        schema.TypeString,
 				Description: "Name of the curation",
 				Required:    true,
+				ForceNew:    true,
 			},
 			"collection_name": {
 				Type:        schema.TypeString,
@@ -166,6 +167,10 @@ func resourceTypesenseCurationRead(ctx context.Context, d *schema.ResourceData, 
 	}
 
 	if err := d.Set("name", override.Id); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("collection_name", collectionName); err != nil {
 		return diag.FromErr(err)
 	}
 
