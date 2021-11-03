@@ -1,7 +1,13 @@
 package typesense
 
 import (
+	"context"
+	"fmt"
+	"log"
+
+	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/typesense/typesense-go/typesense"
 )
 
 func dataSourceTypesenseSynonyms() *schema.Resource {
@@ -22,7 +28,9 @@ func dataSourceTypesenseSynonyms() *schema.Resource {
 				Type:        schema.TypeList,
 				Description: "Target collection names",
 				Computed:    true,
-				Elem:        &schema.Resource{},
+				Elem: &schema.Schema{
+					Type: schema.TypeString,
+				},
 			},
 			"root": {
 				Type:        schema.TypeString,
@@ -30,6 +38,49 @@ func dataSourceTypesenseSynonyms() *schema.Resource {
 				Description: "Root for one-way synonym",
 			},
 		},
-		ReadContext: resourceTypesenseSynonymsRead,
+		ReadContext: dataSourceTypesenseSynonymsRead,
 	}
+}
+
+func dataSourceTypesenseSynonymsRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+	client := meta.(*typesense.Client)
+
+	var diags diag.Diagnostics
+
+	name := d.Get("name").(string)
+	collectionName := d.Get("collection_name").(string)
+
+	id := fmt.Sprintf("%s.%s", collectionName, name)
+
+	synonym, err := client.Collection(collectionName).Synonym(name).Retrieve()
+	if err != nil {
+		d.SetId("")
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("collection_name", collectionName); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("name", synonym.Id); err != nil {
+		return diag.FromErr(err)
+	}
+
+	log.Println(synonym.Synonyms)
+
+	if err := d.Set("synonyms", synonym.Synonyms); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if synonym.Root != "" {
+		if err := d.Set("root", synonym.Root); err != nil {
+			if err := d.Set("root", synonym.Root); err != nil {
+				return diag.FromErr(err)
+			}
+		}
+	}
+
+	d.SetId(id)
+
+	return diags
 }
