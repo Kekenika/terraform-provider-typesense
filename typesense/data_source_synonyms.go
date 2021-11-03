@@ -50,7 +50,7 @@ func dataSourceTypesenseSynonymsRead(ctx context.Context, d *schema.ResourceData
 	name := d.Get("name").(string)
 	collectionName := d.Get("collection_name").(string)
 
-	id := fmt.Sprintf("%s.%s", name, collectionName)
+	id := fmt.Sprintf("%s.%s", collectionName, name)
 
 	synonym, err := client.Collection(collectionName).Synonym(name).Retrieve()
 	if err != nil {
