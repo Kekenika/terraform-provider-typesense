@@ -15,7 +15,7 @@ func dataSourceTypesenseDocument() *schema.Resource {
 			},
 			"document": {
 				Type:        schema.TypeMap,
-				Computed:    true,
+				Required:    true,
 				Description: "Document's body",
 				Elem: &schema.Schema{
 					Type: schema.TypeString,

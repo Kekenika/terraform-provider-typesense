@@ -11,12 +11,12 @@ func dataSourceTypesenseSynonyms() *schema.Resource {
 			"name": {
 				Type:        schema.TypeString,
 				Description: "Name of the synonyms",
-				Computed:    true,
+				Required:    true,
 			},
 			"collection_name": {
 				Type:        schema.TypeString,
 				Description: "Name of the collection",
-				Computed:    true,
+				Required:    true,
 			},
 			"synonyms": {
 				Type:        schema.TypeList,
