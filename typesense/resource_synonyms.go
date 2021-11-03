@@ -69,7 +69,7 @@ func resourceTypesenseSynonymsUpsert(ctx context.Context, d *schema.ResourceData
 		return diag.FromErr(err)
 	}
 
-	d.SetId(synonym.Id)
+	d.SetId(fmt.Sprintf("%s.%s", collectionName, synonym.Id))
 	return diags
 }
 
