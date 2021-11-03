@@ -240,6 +240,6 @@ override.tf.json
 # example: *tfplan*
 
 # Terraform files for debugging
-*.tf
+./*.tf
 
 .terraform.lock.hcl
