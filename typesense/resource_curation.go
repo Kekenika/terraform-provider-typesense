@@ -2,6 +2,7 @@ package typesense
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -83,7 +84,7 @@ func resourceTypesenseCuration() *schema.Resource {
 		UpdateContext: resourceTypesenseCurationUpsert,
 		DeleteContext: resourceTypesenseCurationDelete,
 		Importer: &schema.ResourceImporter{
-			StateContext: schema.ImportStatePassthroughContext,
+			StateContext: resourceTypesenseCurationState,
 		},
 	}
 }
@@ -144,7 +145,7 @@ func resourceTypesenseCurationUpsert(ctx context.Context, d *schema.ResourceData
 		return diag.FromErr(err)
 	}
 
-	d.SetId(override.Id)
+	d.SetId(fmt.Sprintf("%s.%s", collectionName, override.Id))
 	return diags
 }
 
@@ -153,8 +154,10 @@ func resourceTypesenseCurationRead(ctx context.Context, d *schema.ResourceData, 
 
 	var diags diag.Diagnostics
 
-	id := d.Id()
-	collectionName := d.Get("collection_name").(string)
+	collectionName, id, err := splitCollectionRelatedId(d.Id(), "curation")
+	if err != nil {
+		return diag.FromErr(err)
+	}
 
 	override, err := client.Collection(collectionName).Override(id).Retrieve()
 	if err != nil {
@@ -190,16 +193,35 @@ func resourceTypesenseCurationDelete(ctx context.Context, d *schema.ResourceData
 
 	var diags diag.Diagnostics
 
-	id := d.Id()
-	collectionName := d.Get("collection_name").(string)
+	collectionName, id, err := splitCollectionRelatedId(d.Id(), "curation")
+	if err != nil {
+		return diag.FromErr(err)
+	}
 
-	_, err := client.Collection(collectionName).Override(id).Delete()
+	_, err = client.Collection(collectionName).Override(id).Delete()
 	if err != nil {
 		return diag.FromErr(err)
 	}
 
 	d.SetId("")
 	return diags
+}
+
+func resourceTypesenseCurationState(ctx context.Context, d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
+	client := meta.(*typesense.Client)
+
+	collectionName, id, err := splitCollectionRelatedId(d.Id(), "alias")
+	if err != nil {
+		return nil, err
+	}
+
+	override, err := client.Collection(collectionName).Override(id).Retrieve()
+	if err != nil {
+		return nil, err
+	}
+
+	d.SetId(fmt.Sprintf("%s.%s", collectionName, override.Id))
+	return []*schema.ResourceData{d}, nil
 }
 
 func flattenCurationRule(rule api.SearchOverrideRule) []interface{} {

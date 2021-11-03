@@ -29,12 +29,14 @@ func Provider() *schema.Provider {
 			"typesense_collection":       dataSourceTypesenseCollection(),
 			"typesense_collection_alias": dataSourceTypesenseCollectionAlias(),
 			"typesense_curation":         dataSourceTypesenseCuration(),
+			"typesense_document":         dataSourceTypesenseDocument(),
 			"typesense_synonyms":         dataSourceTypesenseSynonyms(),
 		},
 
 		ResourcesMap: map[string]*schema.Resource{
 			"typesense_collection":       resourceTypesenseCollection(),
 			"typesense_collection_alias": resourceTypesenseCollectionAlias(),
+			"typesense_document":         resourceTypesenseDocument(),
 			"typesense_curation":         resourceTypesenseCuration(),
 			"typesense_synonyms":         resourceTypesenseSynonyms(),
 		},

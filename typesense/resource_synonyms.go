@@ -2,6 +2,7 @@ package typesense
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -27,7 +28,9 @@ func resourceTypesenseSynonyms() *schema.Resource {
 				Type:     schema.TypeList,
 				Default:  "Target collection names",
 				Required: true,
-				Elem:     &schema.Resource{},
+				Elem: &schema.Schema{
+					Type: schema.TypeString,
+				},
 			},
 			"root": {
 				Type:        schema.TypeString,
@@ -40,7 +43,7 @@ func resourceTypesenseSynonyms() *schema.Resource {
 		UpdateContext: resourceTypesenseSynonymsUpsert,
 		DeleteContext: resourceTypesenseSynonymsDelete,
 		Importer: &schema.ResourceImporter{
-			StateContext: schema.ImportStatePassthroughContext,
+			StateContext: resourceTypesenseSynonymsState,
 		},
 	}
 }
@@ -74,8 +77,10 @@ func resourceTypesenseSynonymsRead(ctx context.Context, d *schema.ResourceData, 
 
 	var diags diag.Diagnostics
 
-	id := d.Id()
-	collectionName := d.Get("collection_name").(string)
+	collectionName, id, err := splitCollectionRelatedId(d.Id(), "synonyms")
+	if err != nil {
+		return diag.FromErr(err)
+	}
 
 	synonym, err := client.Collection(collectionName).Synonym(id).Retrieve()
 	if err != nil {
@@ -106,14 +111,33 @@ func resourceTypesenseSynonymsDelete(ctx context.Context, d *schema.ResourceData
 
 	var diags diag.Diagnostics
 
-	id := d.Id()
-	collectionName := d.Get("collection_name").(string)
+	collectionName, id, err := splitCollectionRelatedId(d.Id(), "document")
+	if err != nil {
+		return diag.FromErr(err)
+	}
 
-	_, err := client.Collection(collectionName).Synonym(id).Delete()
+	_, err = client.Collection(collectionName).Synonym(id).Delete()
 	if err != nil {
 		return diag.FromErr(err)
 	}
 
 	d.SetId("")
 	return diags
+}
+
+func resourceTypesenseSynonymsState(ctx context.Context, d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
+	client := meta.(*typesense.Client)
+
+	collectionName, id, err := splitCollectionRelatedId(d.Id(), "synonyms")
+	if err != nil {
+		return nil, err
+	}
+
+	synonym, err := client.Collection(collectionName).Synonym(id).Retrieve()
+	if err != nil {
+		return nil, err
+	}
+
+	d.SetId(fmt.Sprintf("%s.%s", collectionName, synonym.Id))
+	return []*schema.ResourceData{d}, nil
 }
