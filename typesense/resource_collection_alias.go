@@ -17,6 +17,7 @@ func resourceTypesenseCollectionAlias() *schema.Resource {
 				Type:        schema.TypeString,
 				Description: "Name of the collection alias",
 				Required:    true,
+				ForceNew:    true,
 			},
 			"collection_name": {
 				Type:        schema.TypeString,
