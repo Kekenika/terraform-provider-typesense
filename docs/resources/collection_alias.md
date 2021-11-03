@@ -24,7 +24,7 @@ resource "typesense_collection_alias" "my_alias" {
 
 ### Required
 
-- **collection_name** (String)
+- **collection_name** (String) Target collection names
 - **name** (String) Name of the collection alias
 
 ### Optional

@@ -32,7 +32,7 @@ resource "typesense_synonyms" "my_synonyms" {
 
 - **collection_name** (String) Name of the collection
 - **name** (String) Name of the synonyms
-- **synonyms** (List of String)
+- **synonyms** (List of String) Target collection names
 
 ### Optional
 

@@ -18,9 +18,9 @@ func dataSourceTypesenseCollectionAlias() *schema.Resource {
 				Required:    true,
 			},
 			"collection_name": {
-				Type:     schema.TypeString,
-				Default:  "Target collection names",
-				Computed: true,
+				Type:        schema.TypeString,
+				Description: "Target collection names",
+				Computed:    true,
 			},
 		},
 		ReadContext: dataSourceTypesenseCollectionAliasRead,

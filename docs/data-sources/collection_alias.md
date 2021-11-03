@@ -32,6 +32,6 @@ data "typesense_collection_alias" "my_alias" {
 
 ### Read-Only
 
-- **collection_name** (String)
+- **collection_name** (String) Target collection names
 
 
