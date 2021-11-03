@@ -2,7 +2,6 @@ package typesense
 
 import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
 func dataSourceTypesenseCuration() *schema.Resource {
@@ -31,9 +30,8 @@ func dataSourceTypesenseCuration() *schema.Resource {
 							Computed: true,
 						},
 						"match": {
-							Type:         schema.TypeString,
-							Computed:     true,
-							ValidateFunc: validation.StringInSlice([]string{"exact", "contains"}, false),
+							Type:     schema.TypeString,
+							Computed: true,
 						},
 					},
 				},
@@ -50,10 +48,9 @@ func dataSourceTypesenseCuration() *schema.Resource {
 							Computed:    true,
 						},
 						"position": {
-							Type:         schema.TypeInt,
-							Computed:     true,
-							Description:  "Document position",
-							ValidateFunc: validation.StringInSlice([]string{"exact", "contains"}, false),
+							Type:        schema.TypeInt,
+							Computed:    true,
+							Description: "Document position",
 						},
 					},
 				},
