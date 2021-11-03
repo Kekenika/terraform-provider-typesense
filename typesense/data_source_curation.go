@@ -22,7 +22,6 @@ func dataSourceTypesenseCuration() *schema.Resource {
 				Type:        schema.TypeList,
 				Description: "Rule of this curation",
 				Computed:    true,
-				MaxItems:    1,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"query": {
