@@ -13,11 +13,6 @@ func resourceTypesenseDocument() *schema.Resource {
 	return &schema.Resource{
 		Description: "Item in a collection",
 		Schema: map[string]*schema.Schema{
-			"id": {
-				Type:        schema.TypeString,
-				Description: "ID of the document",
-				Required:    true,
-			},
 			"collection_name": {
 				Type:        schema.TypeString,
 				Description: "Name of the collection",
@@ -61,11 +56,11 @@ func resourceTypesenseDocumentUpsert(ctx context.Context, d *schema.ResourceData
 	}
 
 	var id string
-	if v, ok := d.GetOk("id"); ok {
+	if v, ok := document["id"]; ok {
 		id = v.(string)
+	} else {
+		return diag.Errorf("id required for document")
 	}
-
-	document["id"] = id
 
 	_, err := client.Collection(collectionName).Documents().Create(document)
 	if err != nil {

@@ -25,7 +25,10 @@ data "typesense_document" "my_doc" {
 ### Required
 
 - **collection_name** (String) Name of the collection
-- **id** (String) ID of the document
+
+### Optional
+
+- **id** (String) The ID of this resource.
 
 ### Read-Only
 
