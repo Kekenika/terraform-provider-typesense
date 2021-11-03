@@ -19,9 +19,9 @@ func resourceTypesenseCollectionAlias() *schema.Resource {
 				Required:    true,
 			},
 			"collection_name": {
-				Type:     schema.TypeString,
-				Default:  "Target collection names",
-				Required: true,
+				Type:        schema.TypeString,
+				Description: "Target collection names",
+				Required:    true,
 			},
 		},
 		ReadContext:   resourceTypesenseCollectionAliasRead,
