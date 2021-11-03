@@ -35,7 +35,7 @@ Group of related documents which are roughly equivalent to a table in a relation
 Required:
 
 - **name** (String)
-- **type** (String)
+- **type** (String) Field type
 
 Optional:
 

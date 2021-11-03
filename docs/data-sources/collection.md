@@ -17,30 +17,27 @@ Group of related documents which are roughly equivalent to a table in a relation
 
 ### Required
 
-- **fields** (Block List, Min: 1) (see [below for nested schema](#nestedblock--fields))
 - **name** (String) Name of the collection.
 
 ### Optional
 
-- **default_sorting_field** (String)
 - **id** (String) The ID of this resource.
 
 ### Read-Only
 
+- **default_sorting_field** (String)
+- **fields** (List of Object) (see [below for nested schema](#nestedatt--fields))
 - **num_documents** (Number)
 
-<a id="nestedblock--fields"></a>
+<a id="nestedatt--fields"></a>
 ### Nested Schema for `fields`
 
-Required:
+Read-Only:
 
+- **facet** (Boolean)
+- **index** (Boolean)
 - **name** (String)
+- **optional** (Boolean)
 - **type** (String)
-
-Optional:
-
-- **facet** (Boolean) Facetable field
-- **index** (Boolean) Index field
-- **optional** (Boolean) Optional field
 
 
