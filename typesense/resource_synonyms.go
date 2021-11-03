@@ -89,6 +89,10 @@ func resourceTypesenseSynonymsRead(ctx context.Context, d *schema.ResourceData, 
 		return diag.FromErr(err)
 	}
 
+	if err := d.Set("collection_name", collectionName); err != nil {
+		return diag.FromErr(err)
+	}
+
 	if err := d.Set("name", synonym.Id); err != nil {
 		return diag.FromErr(err)
 	}

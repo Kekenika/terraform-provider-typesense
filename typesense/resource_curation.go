@@ -170,6 +170,10 @@ func resourceTypesenseCurationRead(ctx context.Context, d *schema.ResourceData, 
 		return diag.FromErr(err)
 	}
 
+	if err := d.Set("collection_name", collectionName); err != nil {
+		return diag.FromErr(err)
+	}
+
 	if err := d.Set("rule", flattenCurationRule(override.Rule)); err != nil {
 		return diag.FromErr(err)
 	}
