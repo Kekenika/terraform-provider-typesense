@@ -27,7 +27,9 @@ func resourceTypesenseSynonyms() *schema.Resource {
 				Type:     schema.TypeList,
 				Default:  "Target collection names",
 				Required: true,
-				Elem:     &schema.Resource{},
+				Elem: &schema.Schema{
+					Type: schema.TypeString,
+				},
 			},
 			"root": {
 				Type:        schema.TypeString,
