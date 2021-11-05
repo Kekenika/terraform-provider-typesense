@@ -67,6 +67,8 @@ func resourceTypesenseCollection() *schema.Resource {
 								"int64[]",
 								"float[]",
 								"bool[]",
+								"geopoint",
+								"auto",
 							}, false),
 						},
 					},
