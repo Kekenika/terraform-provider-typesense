@@ -8,6 +8,10 @@ This provider plugin is maintained by:
 
 * [@KeisukeYamashita](https;//github.com/KeisukeYamashita)
 
+## Support
+
+- Supports v0.21.0 version of Typesense.
+
 ## Requirements
 
 - [Terraform](https://www.terraform.io/downloads.html) >= v0.12.0 (v0.11.x may work but not supported actively)
