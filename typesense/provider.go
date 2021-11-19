@@ -14,6 +14,7 @@ func Provider() *schema.Provider {
 			"api_key": {
 				Type:        schema.TypeString,
 				Required:    true,
+				Sensitive:   true,
 				DefaultFunc: schema.EnvDefaultFunc("TYPESENSE_API_KEY", nil),
 				Description: "API Key to access the Typesense server. This can also be set via the `TYPESENSE_API_KEY` environment variable.",
 			},
