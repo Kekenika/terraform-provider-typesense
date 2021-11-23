@@ -2,7 +2,7 @@
 
 set -eu
 
-readonly RELEASE_URL="https://github.com/jmatsu/terraform-provider-slack/releases"
+readonly RELEASE_URL="https://github.com/Kekenika/terraform-provider-typesense/releases"
 
 die() {
     echo "$@" 1>&2
@@ -29,10 +29,10 @@ download() {
 
     if is_windows; then
         curl -sL -o "$temp_file" \
-            "$RELEASE_URL/download/$VERSION/terraform-provider-slack_$(uname -s)_$(uname -m).zip"
+            "$RELEASE_URL/download/$VERSION/terraform-provider-typesense_$(uname -s)_$(uname -m).zip"
     else
         curl -sL -o "$temp_file" \
-            "$RELEASE_URL/download/$VERSION/terraform-provider-slack_$(uname -s)_$(uname -m).tar.gz"
+            "$RELEASE_URL/download/$VERSION/terraform-provider-typesense_$(uname -s)_$(uname -m).tar.gz"
     fi
 }
 
@@ -57,6 +57,6 @@ else
     tar -xf "$TEMP_FILE" -C "$TEMP_DIR"
 fi
 
-cp "$TEMP_DIR/terraform-provider-slack" ./terraform-provider-slack_${VERSION}
+cp "$TEMP_DIR/terraform-provider-slack" ./terraform-provider-typesense_${VERSION}
 
 rm -fr "$TEMP_DIR"
