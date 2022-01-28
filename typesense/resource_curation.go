@@ -93,8 +93,6 @@ func resourceTypesenseCuration() *schema.Resource {
 func resourceTypesenseCurationUpsert(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*typesense.Client)
 
-	var diags diag.Diagnostics
-
 	name := d.Get("name").(string)
 	collectionName := d.Get("collection_name").(string)
 	overwriteSchema := &api.SearchOverrideSchema{}
@@ -147,7 +145,7 @@ func resourceTypesenseCurationUpsert(ctx context.Context, d *schema.ResourceData
 	}
 
 	d.SetId(fmt.Sprintf("%s.%s", collectionName, override.Id))
-	return diags
+	return resourceTypesenseCurationRead(ctx, d, meta)
 }
 
 func resourceTypesenseCurationRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {

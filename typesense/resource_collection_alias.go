@@ -38,8 +38,6 @@ func resourceTypesenseCollectionAlias() *schema.Resource {
 func resourceTypesenseCollectionAliasUpsert(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*typesense.Client)
 
-	var diags diag.Diagnostics
-
 	name := d.Get("name").(string)
 	aliasSchema := &api.CollectionAliasSchema{
 		CollectionName: d.Get("collection_name").(string),
@@ -51,7 +49,7 @@ func resourceTypesenseCollectionAliasUpsert(ctx context.Context, d *schema.Resou
 	}
 
 	d.SetId(alias.Name)
-	return diags
+	return resourceTypesenseCollectionAliasRead(ctx, d, meta)
 }
 
 func resourceTypesenseCollectionAliasRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
