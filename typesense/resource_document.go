@@ -41,8 +41,6 @@ func resourceTypesenseDocument() *schema.Resource {
 func resourceTypesenseDocumentUpsert(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*typesense.Client)
 
-	var diags diag.Diagnostics
-
 	var collectionName string
 
 	if v, ok := d.GetOk("collection_name"); ok {
@@ -68,7 +66,7 @@ func resourceTypesenseDocumentUpsert(ctx context.Context, d *schema.ResourceData
 	}
 
 	d.SetId(fmt.Sprintf("%s.%s", collectionName, id))
-	return diags
+	return resourceTypesenseCurationRead(ctx, d, meta)
 }
 
 func resourceTypesenseDocumentRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {

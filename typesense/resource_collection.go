@@ -97,8 +97,6 @@ func resourceTypesenseCollection() *schema.Resource {
 func resourceTypesenseCollectionCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*typesense.Client)
 
-	var diags diag.Diagnostics
-
 	schema := &api.CollectionSchema{}
 
 	if v := d.Get("name"); v != "" {
@@ -141,7 +139,7 @@ func resourceTypesenseCollectionCreate(ctx context.Context, d *schema.ResourceDa
 	}
 
 	d.SetId(collection.Name)
-	return diags
+	return resourceTypesenseCollectionRead(ctx, d, meta)
 }
 
 func resourceTypesenseCollectionRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
@@ -182,8 +180,6 @@ func resourceTypesenseCollectionRead(ctx context.Context, d *schema.ResourceData
 // https://github.com/typesense/typesense/issues/96
 func resourceTypesenseCollectionUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*typesense.Client)
-
-	var diags diag.Diagnostics
 
 	id := d.Id()
 
@@ -235,7 +231,7 @@ func resourceTypesenseCollectionUpdate(ctx context.Context, d *schema.ResourceDa
 		return diag.FromErr(err)
 	}
 
-	return diags
+	return resourceTypesenseCurationRead(ctx, d, meta)
 }
 
 func resourceTypesenseCollectionDelete(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {

@@ -52,8 +52,6 @@ func resourceTypesenseSynonyms() *schema.Resource {
 func resourceTypesenseSynonymsUpsert(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*typesense.Client)
 
-	var diags diag.Diagnostics
-
 	name := d.Get("name").(string)
 	collectionName := d.Get("collection_name").(string)
 	synonymSchema := &api.SearchSynonymSchema{
@@ -70,7 +68,7 @@ func resourceTypesenseSynonymsUpsert(ctx context.Context, d *schema.ResourceData
 	}
 
 	d.SetId(fmt.Sprintf("%s.%s", collectionName, synonym.Id))
-	return diags
+	return resourceTypesenseCurationRead(ctx, d, meta)
 }
 
 func resourceTypesenseSynonymsRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
