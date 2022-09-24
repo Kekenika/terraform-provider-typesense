@@ -47,6 +47,26 @@ func dataSourceTypesenseCollection() *schema.Resource {
 							Computed:    true,
 							Description: "",
 						},
+						"infix": {
+							Type:        schema.TypeBool,
+							Computed:    true,
+							Description: "Infix field",
+						},
+						"sort": {
+							Type:        schema.TypeBool,
+							Computed:    true,
+							Description: "Sort field",
+						},
+						"locale": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "Locale field",
+						},
+						"drop": {
+							Type:        schema.TypeBool,
+							Computed:    true,
+							Description: "Drop field",
+						},
 					},
 				},
 			},
