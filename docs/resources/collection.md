@@ -53,6 +53,10 @@ Optional:
 - **facet** (Boolean) Facetable field
 - **index** (Boolean) Index field
 - **optional** (Boolean) Optional field
+- **infix** (Boolean) Infix field
+- **sort** (Boolean) Sort field
+- **locale** (Boolean) Locale field
+- **drop** (Boolean) Drop field
 
 ## Import
 

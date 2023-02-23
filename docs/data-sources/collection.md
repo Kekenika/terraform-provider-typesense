@@ -45,5 +45,9 @@ Read-Only:
 - **name** (String)
 - **optional** (Boolean)
 - **type** (String)
+- **infix** (Boolean)
+- **sort** (Boolean)
+- **locale** (String)
+- **drop** (Boolean)
 
 

@@ -59,7 +59,7 @@ func resourceTypesenseSynonymsUpsert(ctx context.Context, d *schema.ResourceData
 	}
 
 	if v := d.Get("root"); v != nil {
-		synonymSchema.Root = v.(string)
+		synonymSchema.Root = stringPointer(v.(string))
 	}
 
 	synonym, err := client.Collection(collectionName).Synonyms().Upsert(name, synonymSchema)
@@ -99,7 +99,7 @@ func resourceTypesenseSynonymsRead(ctx context.Context, d *schema.ResourceData, 
 		return diag.FromErr(err)
 	}
 
-	if synonym.Root != "" {
+	if synonym.Root != nil && *synonym.Root != "" {
 		if err := d.Set("root", synonym.Root); err != nil {
 			if err := d.Set("root", synonym.Root); err != nil {
 				return diag.FromErr(err)

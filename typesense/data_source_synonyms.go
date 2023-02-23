@@ -72,7 +72,7 @@ func dataSourceTypesenseSynonymsRead(ctx context.Context, d *schema.ResourceData
 		return diag.FromErr(err)
 	}
 
-	if synonym.Root != "" {
+	if synonym.Root != nil && *synonym.Root != "" {
 		if err := d.Set("root", synonym.Root); err != nil {
 			if err := d.Set("root", synonym.Root); err != nil {
 				return diag.FromErr(err)

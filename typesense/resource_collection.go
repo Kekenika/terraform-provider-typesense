@@ -71,6 +71,34 @@ func resourceTypesenseCollection() *schema.Resource {
 								"auto",
 							}, false),
 						},
+						"infix": {
+							Type:        schema.TypeBool,
+							ForceNew:    true,
+							Optional:    true,
+							Default:     false,
+							Description: "Infix field",
+						},
+						"sort": {
+							Type:        schema.TypeBool,
+							ForceNew:    true,
+							Optional:    true,
+							Default:     false,
+							Description: "Sort field",
+						},
+						"locale": {
+							Type:        schema.TypeString,
+							ForceNew:    true,
+							Optional:    true,
+							Default:     false,
+							Description: "Locale field",
+						},
+						"drop": {
+							Type:        schema.TypeBool,
+							ForceNew:    true,
+							Optional:    true,
+							Default:     false,
+							Description: "Sort field",
+						},
 					},
 				},
 			},
@@ -104,7 +132,7 @@ func resourceTypesenseCollectionCreate(ctx context.Context, d *schema.ResourceDa
 	}
 
 	if v := d.Get("default_sorting_field"); v != "" {
-		schema.DefaultSortingField = v.(string)
+		schema.DefaultSortingField = stringPointer(v.(string))
 	}
 
 	fields := []api.Field{}
@@ -117,15 +145,31 @@ func resourceTypesenseCollectionCreate(ctx context.Context, d *schema.ResourceDa
 		}
 
 		if value := v["facet"]; value != "" {
-			field.Facet = value.(bool)
+			field.Facet = boolPointer(value.(bool))
 		}
 
 		if value := v["optional"]; value != "" {
-			field.Optional = value.(bool)
+			field.Optional = boolPointer(value.(bool))
 		}
 
 		if value := v["index"]; value != "" {
 			field.Index = boolPointer(value.(bool))
+		}
+
+		if value := v["infix"]; value != "" {
+			field.Infix = boolPointer(value.(bool))
+		}
+
+		if value := v["sort"]; value != "" {
+			field.Sort = boolPointer(value.(bool))
+		}
+
+		if value := v["locale"]; value != "" {
+			field.Locale = stringPointer(value.(string))
+		}
+
+		if value := v["drop"]; value != "" {
+			field.Drop = boolPointer(value.(bool))
 		}
 
 		fields = append(fields, field)
@@ -197,7 +241,7 @@ func resourceTypesenseCollectionUpdate(ctx context.Context, d *schema.ResourceDa
 	}
 
 	if v := d.Get("default_sorting_field"); v != "" {
-		schema.DefaultSortingField = v.(string)
+		schema.DefaultSortingField = stringPointer(v.(string))
 	}
 
 	fields := []api.Field{}
@@ -210,15 +254,31 @@ func resourceTypesenseCollectionUpdate(ctx context.Context, d *schema.ResourceDa
 		}
 
 		if value := v["facet"]; value != "" {
-			field.Facet = value.(bool)
+			field.Facet = boolPointer(value.(bool))
 		}
 
 		if value := v["optional"]; value != "" {
-			field.Optional = value.(bool)
+			field.Optional = boolPointer(value.(bool))
 		}
 
 		if value := v["index"]; value != "" {
 			field.Index = boolPointer(value.(bool))
+		}
+
+		if value := v["infix"]; value != "" {
+			field.Infix = boolPointer(value.(bool))
+		}
+
+		if value := v["sort"]; value != "" {
+			field.Sort = boolPointer(value.(bool))
+		}
+
+		if value := v["locale"]; value != "" {
+			field.Locale = stringPointer(value.(string))
+		}
+
+		if value := v["drop"]; value != "" {
+			field.Drop = boolPointer(value.(bool))
 		}
 
 		fields = append(fields, field)
@@ -261,6 +321,10 @@ func flattenCollectionFields(fields []api.Field) []interface{} {
 			fi["index"] = field.Index
 			fi["optional"] = field.Optional
 			fi["type"] = field.Type
+			fi["infix"] = field.Infix
+			fi["locale"] = field.Locale
+			fi["sort"] = field.Sort
+			fi["drop"] = field.Drop
 			fis[i] = fi
 		}
 

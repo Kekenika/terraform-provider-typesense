@@ -105,14 +105,14 @@ func dataSourceTypesenseCurationRead(ctx context.Context, d *schema.ResourceData
 		return diag.FromErr(err)
 	}
 
-	if len(override.Includes) > 0 {
-		if err := d.Set("includes", flattenCurationIncludes(override.Includes)); err != nil {
+	if override.Includes != nil && len(*override.Includes) > 0 {
+		if err := d.Set("includes", flattenCurationIncludes(*override.Includes)); err != nil {
 			return diag.FromErr(err)
 		}
 	}
 
-	if len(override.Excludes) > 0 {
-		if err := d.Set("excludes", flattenCurationExcludes(override.Excludes)); err != nil {
+	if override.Excludes != nil && len(*override.Excludes) > 0 {
+		if err := d.Set("excludes", flattenCurationExcludes(*override.Excludes)); err != nil {
 			return diag.FromErr(err)
 		}
 	}
